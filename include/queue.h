@@ -4,12 +4,6 @@
 #include "processes.h"
 #include <stdlib.h>
 
-typedef struct node {
-	struct node* head;
-	struct node* tail;
-	instruction_* process;
-} node;
-
 typedef struct queue {
 
 	node* next;

@@ -6,3 +6,4 @@ bin/*
 bin
 .git
 processes.out
+leak_info.txt

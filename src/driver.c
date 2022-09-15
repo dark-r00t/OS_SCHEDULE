@@ -1,8 +1,11 @@
-#include "processes.h"
 #include "file.h"
+#include "processes.h"
+#include "leak_detector_c.h"
 #include <stdlib.h>
 
 int main(void) {
+
+	atexit(report_mem_leak);
 
 	char* process = get_process();
 	

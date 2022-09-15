@@ -29,9 +29,16 @@ typedef struct instructions_ {
 
 } instructions_;
 
+typedef struct node {
+	struct node* head;
+	struct node* tail;
+	instruction_* process;
+} node;
+
 void execute_process(instructions_* list);
 void fcfs(FILE* output, instructions_* list);
 void sjf(FILE* output, instructions_* list);
 void rr(FILE* output, instructions_* list);
+void rr_burst(FILE* output, int time, node* active_node);
 
 #endif

@@ -1,1 +1,1 @@
-make rebuild && ./bin/run && bat processes.out # && diff processes.out processes.out.tmp
+make rebuild && ./bin/run && diff processes.out processes.out.tmp # && bat processes.out
