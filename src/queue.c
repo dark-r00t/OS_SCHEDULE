@@ -1,7 +1,9 @@
 #include "queue.h"
 
 queue* create_queue() {
+
 	queue* q = malloc(sizeof(queue));
+
 	q->next = NULL;
 	q->prev = NULL;
 
@@ -11,6 +13,7 @@ queue* create_queue() {
 node* create_node(instruction_* process) {
 
 	node* n = malloc(sizeof(node));
+
 	n->head=NULL;
 	n->tail=NULL;
 	n->process=process;
@@ -18,44 +21,56 @@ node* create_node(instruction_* process) {
 	return n;
 } 
 
-node* pop(queue* q) {
+node* dequeue(queue* q) {
 
 	if(!q || !q->next) return NULL;
 
-	node* t = q->next;
-	q->next = q->next->head;
+	node* t = q->next; // node to dequeue
+	q->next = q->next->head; // skip over next node
 
-	t->head = NULL;
+	t->head = NULL;// detaching from nodes
 	t->tail = NULL;
 
-	if(q->next) q->next->tail = NULL;
+	if(!q->next) q->prev = NULL;
 
 	return t;
 }
 
-void push(queue* q, node* n) {
+void enqueue(queue* q, node* n) {
 
 	if(!q || !n) return;
 
-	if(!q->next) {
+	/* if(!q->next) {// nothin in list
+
 		q->next = n;
 		n->head = NULL;
 		n->tail = NULL;
+
 		return;
 	}
 
 	if(!q->prev) {
+
 		q->next->head = n;
 		q->prev=n;
 		n->head = NULL;
 		n->tail = q->next;
+		
 		return;
 	}
 
 	q->prev->head = n;
 	n->tail = q->prev;
 	q->prev = n;
-	n->head = NULL;
+	n->head = NULL; */
+
+	if(!q->next) {
+		q->next = q->prev = n;
+	} else {
+		q->prev->head = n;
+		q->prev = n;
+	}
+
 }
 
 void push_rr(queue* q, node* n) {
@@ -66,36 +81,19 @@ void push_rr(queue* q, node* n) {
 
 	node* t = q->next;
 	while(t) {
-		if(n->process->burst < t->process->burst) 
+
+		if(n->process->arrival < t->process->arrival) 
 			break;
 		t = t->head;
 	}
 
-	if(!q->next) {
-		q->next = n;
-		n->head = NULL;
-		n->tail = NULL;
+	if (t == NULL) {
+		push(q, n);
 		return;
-	} 
+	}
 
-	if (!t) {
-
-		if(!q->prev) {
-			q->prev = n;
-			q->next->head = n;
-			q->prev->tail = q->next;
-		} else {
-			q->prev->head = n;
-			n->tail = q->prev;
-			q->prev = n;
-		}
-
-		return; 
-	} 
-
-	if(t == q->next)
-		q->next = n;
-
+	if (t == q->next)
+       	q->next = n;
 	n->tail = t->tail;
 	n->head = t;
 	t->tail = n;

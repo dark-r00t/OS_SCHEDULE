@@ -4,12 +4,11 @@
 #include "processes.h"
 #include <stdlib.h>
 
-typedef struct node node;
-struct node {
-	node* head;
-	node* tail;
+typedef struct node {
+	struct node* head;
+	struct node* tail;
 	instruction_* process;
-};
+} node;
 
 typedef struct queue {
 
@@ -19,8 +18,8 @@ typedef struct queue {
 
 queue* create_queue();
 node* create_node(instruction_* process);
-node* pop(queue* q);
-void push(queue* q, node* n);
+node* dequeue(queue* q);
+void enqueue(queue* q, node* n);
 void push_rr(queue* q, node* n);
 
 #endif

@@ -36,7 +36,15 @@ char* rr(instructions_* list) {
 		push_rr(q, current);
 	}
 	
-	
+	node* t = q->next;
+	printf("%s", t->process->name);
+	printf("%s", t->head->process->name);
+	t = dequeue(q);
+	printf("%s ", t->process->name);
+	t = dequeue(q);
+	printf("%s ", t->process->name);
+	t = dequeue(q);
+	if(!t) printf("!");
 
 	return NULL;
 } 
