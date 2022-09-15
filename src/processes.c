@@ -42,7 +42,7 @@ void rr(FILE* output, instructions_* list) {
 
 	// create new nodes and shove them into a queue based on arrival time
 	for(int i = 0; i < list->processcount; i++) {
-		push_rr(q, create_node(list->id[i]));
+		enqueue_rr(q, create_node(list->id[i]));
 	}
 	
 	// generic scope variables

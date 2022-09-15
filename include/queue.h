@@ -14,6 +14,6 @@ queue* create_queue();
 node* create_node(instruction_* process);
 node* dequeue(queue* q);
 void enqueue(queue* q, node* n);
-void push_rr(queue* q, node* n);
+void enqueue_rr(queue* q, node* n);
 
 #endif

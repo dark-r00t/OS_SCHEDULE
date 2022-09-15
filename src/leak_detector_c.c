@@ -172,7 +172,6 @@ void remove_mem_info (void * mem_ref)
  */
 void report_mem_leak(void)
 {
-	unsigned short index;
 	MEM_LEAK * leak_info;
 
 	FILE * fp_write = fopen (OUTPUT_FILE, "wt");

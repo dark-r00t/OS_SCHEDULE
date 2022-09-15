@@ -49,7 +49,7 @@ void enqueue(queue* q, node* n) {
 
 }
 
-void push_rr(queue* q, node* n) {
+void enqueue_rr(queue* q, node* n) {
 	// take a new node, push it into its correct spot.
 	// essentially, sorting by arrival time
 
