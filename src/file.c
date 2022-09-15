@@ -131,19 +131,11 @@ int get_process_id(char* token) {
 
 	if(!strcmp(token, "processcount")) {
 		return 1;
-	}
-
-	if(!strcmp(token, "runfor")) {
+	} else if(!strcmp(token, "runfor")) {
 		return 2;
-	}
-
-	if(!strcmp(token, "use")) {
+	} else if(!strcmp(token, "use")) {
 		return 3;
-	}
-
-	if(!strcmp(token, "process")) {// process name
+	} else if(!strcmp(token, "process")) {// process name
 		return 4;
-	} 
-
-	return 0;
+	} return 0;
 } 
