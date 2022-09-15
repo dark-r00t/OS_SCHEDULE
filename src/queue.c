@@ -40,30 +40,6 @@ void enqueue(queue* q, node* n) {
 
 	if(!q || !n) return;
 
-	/* if(!q->next) {// nothin in list
-
-		q->next = n;
-		n->head = NULL;
-		n->tail = NULL;
-
-		return;
-	}
-
-	if(!q->prev) {
-
-		q->next->head = n;
-		q->prev=n;
-		n->head = NULL;
-		n->tail = q->next;
-		
-		return;
-	}
-
-	q->prev->head = n;
-	n->tail = q->prev;
-	q->prev = n;
-	n->head = NULL; */
-
 	if(!q->next) {
 		q->next = q->prev = n;
 	} else {
