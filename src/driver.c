@@ -8,10 +8,7 @@ int main(void) {
 	
 	instructions_* list = parse_process(process);
 	
-	char* output = execute_process(list);
-
-	FILE* fp = fopen("p.out", "w");
-	fclose(fp);
+	execute_process(list);
 	
 	free(process);
 	return 0;

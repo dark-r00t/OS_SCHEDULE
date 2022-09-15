@@ -10,9 +10,10 @@ typedef struct instruction_ {
 
 	char* name;
 	int arrival;
-
 	int burst;
-	int burst_l;
+	int burst_r;
+	int wait;
+	int time_u;
 
 } instruction_;
 
@@ -28,9 +29,9 @@ typedef struct instructions_ {
 
 } instructions_;
 
-char* execute_process(instructions_* list);
-char* fcfs(instructions_* list);
-char* sjf(instructions_* list);
-char* rr(instructions_* list);
+void execute_process(instructions_* list);
+void fcfs(FILE* output, instructions_* list);
+void sjf(FILE* output, instructions_* list);
+void rr(FILE* output, instructions_* list);
 
 #endif

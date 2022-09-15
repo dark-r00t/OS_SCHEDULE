@@ -64,7 +64,7 @@ void push_rr(queue* q, node* n) {
 	}
 
 	if (t == NULL) {
-		push(q, n);
+		enqueue(q, n);
 		return;
 	}
 

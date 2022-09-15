@@ -23,14 +23,15 @@ char* get_process() {
 			while((c = process_tmp[p++]) == ' ');
 			p-=1;
 		}
+
 		if(process_tmp[p] == '#'){
 			// GET RID OF COMMENTS
 			while ((c = process_tmp[p++]) != '\n');
-			process[loc++] = ' ';
+			process[loc++] = ' ';// seperator space, for later use with strtok()
 			continue;
 		}
 
-		//STORE VALUE
+		//STORE VALUE (guranteed to be useful)
 		process[loc++] = process_tmp[p];
 	}
 
@@ -50,34 +51,37 @@ instructions_* parse_process(char* input) {
 	char* process = (char*) malloc(sizeof(char) * l + 1);
 	strcpy(process, input);
 
-	char* token = strtok(process, " ");
+	char* token = strtok(process, " ");// tokenize by white space
 	while(token) {
 
 		tmp = get_process_id(token);
 		token = strtok(NULL, " ");// step ahead one token
 
 		switch(tmp) {
+
 			case 1:{// processcount
 				list->processcount = atoi(token);
 
-				list->id = (instruction_**) malloc(sizeof(instruction_*) * list->processcount);
-				for(int i = 0; i < list->processcount; i++) {
+				list->id = (instruction_**) malloc(sizeof(instruction_*) * list->processcount);// malloc space for each instruction
+				
+				for(int i = 0; i < list->processcount; i++) {// for each instruction create space and add the name
 					list->id[i] = (instruction_*) malloc(sizeof(instruction_));
 					list->id[i]->name = malloc(sizeof(char) * 3);
 				}
 
 				break;
 			}
+
 			case 2:{// runfor
 				list->runfor = atoi(token);
 				break;
 			}
+
 			case 3:{// use
 				if (strcmp(token, "rr") == 0)  {
 					list->use = RR;
 
 					token = strtok(NULL, " ");
-					if(strcmp(token, "quantum")) break; // this should never happen
 					token = strtok(NULL, " ");
 
 					list->quantum = atoi(token);
@@ -90,7 +94,8 @@ instructions_* parse_process(char* input) {
 
 				} break;
 			}
-			case 4:{// name
+
+			case 4:{// name/arrival/burst are always paired
 
 				for(int i = 0; i < list->processcount; i++) {
 					token = strtok(NULL, " "); 
@@ -103,11 +108,13 @@ instructions_* parse_process(char* input) {
 					token = strtok(NULL, " ");
 					token = strtok(NULL, " ");
 					list->id[i]->burst = atoi(token);
+					list->id[i]->burst_r = list->id[i]->burst;
 					token = strtok(NULL, " ");
 				}
 
 				break;
 			}
+
 			default: break;
 		}
 
