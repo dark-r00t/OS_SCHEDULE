@@ -56,14 +56,13 @@ void push_rr(queue* q, node* n) {
 	if(!q || !n) return;
 
 	node* t = q->next;
-	while(t) {
-
-		if(n->process->arrival < t->process->arrival) 
+	while(t) {// stop on new lowest arrivval
+		if(n->process->arrival < t->process->arrival) {
 			break;
-		t = t->head;
+		} t = t->head;
 	}
 
-	if (t == NULL) {
+	if (!t) {
 		enqueue(q, n);
 		return;
 	}

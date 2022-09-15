@@ -35,7 +35,7 @@ void sjf(FILE* output, instructions_* list) {
 
 void rr(FILE* output, instructions_* list) {
 
-	// debug_print_list(list);
+	debug_print_list(list);
 
 	queue* q = create_queue();
 	queue* arrived = create_queue();

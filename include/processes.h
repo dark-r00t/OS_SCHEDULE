@@ -23,7 +23,7 @@ typedef struct instructions_ {
 	int processcount; // 1
 	int runfor; // 2
 	int use; // 3
-	int quantum;// 3.5
+	int quantum;
 
 	instruction_** id; //4
 

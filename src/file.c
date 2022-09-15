@@ -9,7 +9,7 @@ char* get_process() {
 	rewind(fp);
 
 	// CREATE SPACE FOR CHARACTERS
-	char* process_tmp = (char*) malloc(fp_size+1);
+	char* process_tmp = (char*) malloc(fp_size);
 	char* process = (char*) malloc(fp_size);
 	fread(process_tmp, fp_size, 1, fp);
 	fclose(fp);
@@ -21,14 +21,14 @@ char* get_process() {
 		if(process_tmp[p] == ' ' && process_tmp[p+1] == ' ') {
 			// GET RID OF ALL EXTRA WHITE SPACE
 			while((c = process_tmp[p++]) == ' ');
-			p-=1;
+			p--;
 		}
 
 		if(process_tmp[p] == '#'){
 			// GET RID OF COMMENTS
 			while ((c = process_tmp[p++]) != '\n');
 			process[loc++] = ' ';// seperator space, for later use with strtok()
-			continue;
+			continue; // continue because we dont know if the line is one entire comment
 		}
 
 		//STORE VALUE (guranteed to be useful)
@@ -36,19 +36,18 @@ char* get_process() {
 	}
 
 	free(process_tmp);
-
 	return process;
 }
 
 instructions_* parse_process(char* input) {
 
+	// see 'processes.h' for more detail on 'instructions_'
 	instructions_* list = (instructions_*) malloc(sizeof(instructions_));
 
 	int tmp;
-	int l = strlen(input);
 
 	// tokenizing messes up the original string, we want to avoid that.
-	char* process = (char*) malloc(sizeof(char) * l + 1);
+	char* process = (char*) malloc(sizeof(char) * strlen(input) + 1);
 	strcpy(process, input);
 
 	char* token = strtok(process, " ");// tokenize by white space
