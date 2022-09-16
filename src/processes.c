@@ -12,7 +12,12 @@ void execute_process(instructions_* list) {
 	fprintf(output, "%d processes\n", list->processcount);
 	fprintf(output, "Using %s\n", 
 		(list->use == RR) ? "Round-Robin" : (list->use == SJF) ? "Shortest Job First" : "First In First Out");
-	if (list->use == RR) fprintf(output, "Quantum %d\n", list->quantum);
+	
+	if (list->use == RR) {
+		fprintf(output, "Quantum %d\n\n", list->quantum);
+	} else {
+		fprintf(output, "\n");
+	}
 
 	if(list->use == RR) {
 		rr(output, list);
@@ -27,24 +32,34 @@ void execute_process(instructions_* list) {
 
 void fcfs(FILE* output, instructions_* list) {
 
-	LOG; debug_print_list(list);
-}
-
-void sjf(FILE* output, instructions_* list) {
-
-	LOG; debug_print_list(list);
-}
-
-void rr(FILE* output, instructions_* list) {
-
-	LOG; debug_print_list(list);
+	// LOG; debug_print_list(list);
 
 	queue* unused = create_queue();
 	queue* arrived = create_queue();
 
 	// create new nodes and shove them into a queue based on arrival time
 	for(int i = 0; i < list->processcount; i++) {
-		enqueue_rr(unused, create_node(list->id[i]));
+		enqueue_arrival(unused, create_node(list->id[i]));
+	}
+
+
+}
+
+void sjf(FILE* output, instructions_* list) {
+
+	// LOG; debug_print_list(list);
+}
+
+void rr(FILE* output, instructions_* list) {
+
+	// LOG; debug_print_list(list);
+
+	queue* unused = create_queue();
+	queue* arrived = create_queue();
+
+	// create new nodes and shove them into a queue based on arrival time
+	for(int i = 0; i < list->processcount; i++) {
+		enqueue_arrival(unused, create_node(list->id[i]));
 	}
 	
 	// generic scope variables
@@ -117,11 +132,12 @@ void rr(FILE* output, instructions_* list) {
 	fprintf(output, "Finished at time %d\n\n", time);
 
 	for(int i = 0; i < list->processcount; i++) {
+		// ! TODO turnaround data sus, also only case of p->burst, maybe remove p->burst_left and just decrement og
 		instruction_* p = list->id[i]; 
 		fprintf(output, "%s wait %d turnaround %d\n", p->name, p->wait, (p->wait + p->burst));
 	}
 
-	LOG; debug_print_list(list);
+	// LOG; debug_print_list(list);
 
 	free(unused);
 	free(arrived);

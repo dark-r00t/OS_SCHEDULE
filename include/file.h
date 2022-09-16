@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "processes.h"
 
-char* get_process();
+char* get_process(char* optional_in);
 instructions_* parse_process(char* process);
 int get_process_id(char* token);
 

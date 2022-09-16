@@ -1,10 +1,14 @@
 #include "file.h"
 #include "defs.h"
 
-char* get_process() {
+char* get_process(char* optional_in) {
 
+	// For testing, more information in "driver.c"
+	FILE* fp;
+	if(!optional_in) fp = fopen("processes.in", "r");
+	else 			 fp = fopen(optional_in, "r");
+	
 	// GET FILE AND FILE LENGTH
-	FILE* fp = fopen("processes.in", "r");
 	fseek(fp, 0, SEEK_END);
 	unsigned long fp_size = ftell(fp);
 	rewind(fp);
