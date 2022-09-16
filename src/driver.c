@@ -1,5 +1,6 @@
 #include "file.h"
 #include "processes.h"
+#include "defs.h"
 #include "leak_detector_c.h"
 #include <stdlib.h>
 
@@ -13,6 +14,7 @@ int main(int argc, char** argv) {
 	char* optional_in = NULL;
 	if(argc == 2) {
 		optional_in = argv[1];
+		printf("\nNOTE: Running file %s\"%s\"%s\n", GREEN, optional_in, CLEAR);
 	}
 	
 	char* process = get_process(optional_in);
