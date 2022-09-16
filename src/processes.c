@@ -71,7 +71,7 @@ void rr(FILE* output, instructions_* list) {
 		int finished = 0;
 
 		while(unused->next && unused->next->process->arrival == time) {
-			// grab every node that arrives on time, otherwise leavve it in 'unused'
+			// grab every node that arrives on the current time, otherwise leave it in 'unused'
 			node* p;
 			enqueue(arrived, (p = dequeue(unused)));
 
@@ -81,21 +81,22 @@ void rr(FILE* output, instructions_* list) {
 		}
 
 		if(!active_node && arrived->next) {
+			// no active node, but a node available
 			active_node = arrived->next;
 			rr_burst(output, time, active_node);
 		}
 
-		if(arrived->next && !arrived->next->process->burst_left) {
-			//
+		if(active_node && !active_node->process->burst_left) {
+			// no burst left on active node
 			fprintf(output, "Time %d: %s finished\n", time, arrived->next->process->name);
 
-			free(dequeue(arrived));
+			free(dequeue(arrived));// detach active node (active_node == arrived->next), then free it
 			finished = 1;
 
-			if(arrived->next) {
+			if(arrived->next) {// more processes to handle
 				active_node = arrived->next;
 				rr_burst(output, time, active_node);
-			} else {
+			} else {// that's all she wrote
 				active_node = NULL;
 			}
 
@@ -104,30 +105,34 @@ void rr(FILE* output, instructions_* list) {
 
 		if(!finished && time_quantum == list->quantum) {
 
-			arrived->next->process->time_used = time;
-			enqueue(arrived, dequeue(arrived)); // shove the node to the back
+			active_node->process->time_used = time;
+			enqueue(arrived, dequeue(arrived)); // shove the active_node to the back
 
-			if(arrived->next) {
+			if(active_node) {
 				active_node = arrived->next;
 				rr_burst(output, time, active_node);
-			} else {
-				active_node = NULL;
 			}
 
 			time_quantum = 0;
 		}
 
-		if(arrived->next) arrived->next->process->burst_left--;
-		else fprintf(output, "Time %d: IDLE\n", time);
+		if(active_node) active_node->process->burst_left--;
+		else fprintf(output, "Time %d: IDLE\n", time);// idle until time runfor time has been reached
 
 		time_quantum++;
 	}
 
 	if(active_node && !active_node->process->burst_left) {
+		// the last active node finished successfully
 		instruction_* p = active_node->process;
 		fprintf(output, "Time %d: %s finished\n", time, p->name);
-		free(active_node);
+	} else if (active_node && active_node->process->burst_left) {
+		// the last active node ran out of time
+		instruction_* p = active_node->process;
+		fprintf(output, "%s wait %d did not complete\n", p->name, p->wait);
 	}
+
+	if(active_node) free(active_node);
 
 	fprintf(output, "Finished at time %d\n\n", time);
 

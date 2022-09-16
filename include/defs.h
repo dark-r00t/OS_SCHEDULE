@@ -14,5 +14,5 @@
     do {\
         fprintf(stderr, "\nFile: \"%s\" \nFunction: \"%s()\" \nLine: \"%i\"", __FILE__, __func__, __LINE__);\
     } while(0)
-
+    
 #endif
