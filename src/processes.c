@@ -22,16 +22,17 @@ void execute_process(instructions_* list) {
 		sjf(output, list);
 	}
 
-	//fprintf(output, "\n\nClarifications\n");
 	fclose(output);
 }
 
 void fcfs(FILE* output, instructions_* list) {
 
+	LOG; debug_print_list(list);
 }
 
 void sjf(FILE* output, instructions_* list) {
 
+	LOG; debug_print_list(list);
 }
 
 void rr(FILE* output, instructions_* list) {
@@ -102,7 +103,7 @@ void rr(FILE* output, instructions_* list) {
 		}
 
 		if(arrived->next) arrived->next->process->burst_left--;
-		else fprintf(output, "Time %d: Idle\n", time);
+		else fprintf(output, "Time %d: IDLE\n", time);
 
 		time_quantum++;
 	}
@@ -126,7 +127,7 @@ void rr(FILE* output, instructions_* list) {
 	free(arrived);
 } 
 
-void rr_burst (FILE* output, int time, node* active_node) {
+void rr_burst(FILE* output, int time, node* active_node) {
 
 	instruction_* p = active_node->process;
 	p->wait += time - p->time_used;

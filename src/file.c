@@ -16,7 +16,7 @@ char* get_process() {
 	fclose(fp);
 
 	char c;
-	int loc = 0;
+	int loc = 0; 
 	for(unsigned long p = 0; p < fp_size; p++) {
 
 		if(process_tmp[p] == ' ' && process_tmp[p+1] == ' ') {
@@ -29,6 +29,7 @@ char* get_process() {
 			// GET RID OF COMMENTS
 			while ((c = process_tmp[p++]) != '\n');
 			process[loc++] = ' ';// seperator space, for later use with strtok()
+			p--;
 			continue; // continue because we dont know if the line is one entire comment
 		}
 
@@ -88,9 +89,11 @@ instructions_* parse_process(char* input) {
 
 				} else if (strcmp(token, "fcfs") == 0) {
 					list->use = FCFS;
+					list->quantum = 0;
 
 				} else if(strcmp(token, "sjf") == 0) {
 					list->use = SJF;
+					list->quantum = 0;
 
 				} break;
 			}
@@ -120,8 +123,6 @@ instructions_* parse_process(char* input) {
 
 		token = strtok(NULL, " ");
 	}
-
-	//debug_print_list(list);
 
 	free(process);
 	return list;
