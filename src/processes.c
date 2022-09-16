@@ -20,9 +20,9 @@ void execute_process(instructions_* list) {
 	}
 
 	if(list->use == RR) {
-		rr(output, list);
+		schedule_arrival(output, list, RR);
 	} else if(list->use == FCFS) {
-		fcfs(output, list);
+		schedule_arrival(output, list, FCFS);
 	} else if(list->use == SJF) {
 		sjf(output, list);
 	}
@@ -30,41 +30,23 @@ void execute_process(instructions_* list) {
 	fclose(output);
 }
 
-void fcfs(FILE* output, instructions_* list) {
+void schedule_arrival(FILE* output, instructions_* list, int type) {
 
 	// LOG; debug_print_list(list);
+
+	if(type == SJF) return; // this should never happen...
 
 	queue* unused = create_queue();
 	queue* arrived = create_queue();
 
-	// create new nodes and shove them into a queue based on arrival time
-	for(int i = 0; i < list->processcount; i++) {
-		enqueue_arrival(unused, create_node(list->id[i]));
-	}
-
-
-}
-
-void sjf(FILE* output, instructions_* list) {
-
-	// LOG; debug_print_list(list);
-}
-
-void rr(FILE* output, instructions_* list) {
-
-	// LOG; debug_print_list(list);
-
-	queue* unused = create_queue();
-	queue* arrived = create_queue();
-
-	// create new nodes and shove them into a queue based on arrival time
-	for(int i = 0; i < list->processcount; i++) {
-		enqueue_arrival(unused, create_node(list->id[i]));
-	}
-	
 	// generic scope variables
 	int time = -1, time_quantum = 0;
 	node* active_node = NULL;
+
+	// create new nodes and shove them into a queue based on arrival time
+	for(int i = 0; i < list->processcount; i++) {
+		enqueue_arrival(unused, create_node(list->id[i]));
+	}
 
 	while(++time != list->runfor) {// we will never run past the alloted time
 		
@@ -83,7 +65,7 @@ void rr(FILE* output, instructions_* list) {
 		if(!active_node && arrived->next) {
 			// no active node, but a node available
 			active_node = arrived->next;
-			rr_burst(output, time, active_node);
+			burst(output, time, active_node);
 		}
 
 		if(active_node && !active_node->process->burst_left) {
@@ -95,31 +77,34 @@ void rr(FILE* output, instructions_* list) {
 
 			if(arrived->next) {// more processes to handle
 				active_node = arrived->next;
-				rr_burst(output, time, active_node);
+				burst(output, time, active_node);
 			} else {// that's all she wrote
 				active_node = NULL;
 			}
 
-			time_quantum = 0;
+			if (type == RR) time_quantum = 0;
 		}
 
-		if(!finished && time_quantum == list->quantum) {
+		if (type == RR) {
 
-			active_node->process->time_used = time;
-			enqueue(arrived, dequeue(arrived)); // shove the active_node to the back
+			if(!finished && time_quantum == list->quantum) {
 
-			if(active_node) {
-				active_node = arrived->next;
-				rr_burst(output, time, active_node);
+				active_node->process->time_used = time;
+				enqueue(arrived, dequeue(arrived)); // shove the active_node to the back
+
+				if(active_node) {
+					active_node = arrived->next;
+					burst(output, time, active_node);
+				}
+
+				time_quantum = 0;
 			}
-
-			time_quantum = 0;
 		}
 
 		if(active_node) active_node->process->burst_left--;
 		else fprintf(output, "Time %d: IDLE\n", time);// idle until time runfor time has been reached
 
-		time_quantum++;
+		if (type == RR) time_quantum++;
 	}
 
 	if(active_node && !active_node->process->burst_left) {
@@ -146,9 +131,14 @@ void rr(FILE* output, instructions_* list) {
 
 	free(unused);
 	free(arrived);
-} 
+}
 
-void rr_burst(FILE* output, int time, node* active_node) {
+void sjf(FILE* output, instructions_* list) {
+
+	// LOG; debug_print_list(list);
+}
+
+void burst(FILE* output, int time, node* active_node) {
 
 	instruction_* p = active_node->process;
 	p->wait += time - p->time_used;

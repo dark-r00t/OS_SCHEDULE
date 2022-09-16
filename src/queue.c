@@ -15,7 +15,6 @@ node* create_node(instruction_* process) {
 	node* n = malloc(sizeof(node));
 
 	n->head=NULL;
-	n->tail=NULL;
 	n->process=process;
 
 	return n;
@@ -29,7 +28,6 @@ node* dequeue(queue* q) {
 	q->next = q->next->head; // skip over next node
 
 	t->head = NULL;// detaching from nodes
-	t->tail = NULL;
 
 	if(!q->next) q->prev = NULL;
 
@@ -46,7 +44,6 @@ void enqueue(queue* q, node* n) {
 		q->prev->head = n;
 		q->prev = n;
 	}
-
 }
 
 void enqueue_arrival(queue* q, node* n) {
@@ -69,7 +66,5 @@ void enqueue_arrival(queue* q, node* n) {
 
 	if (t == q->next)
        	q->next = n;
-	n->tail = t->tail;
 	n->head = t;
-	t->tail = n;
 }
