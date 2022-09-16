@@ -11,7 +11,7 @@ void execute_process(instructions_* list) {
 	// do first basic lines of printing 
 	fprintf(output, "%d processes\n", list->processcount);
 	fprintf(output, "Using %s\n", 
-		(list->use == RR) ? "Round-Robin" : (list->use == SJF) ? "Shortest Job First" : "First Come First Served");
+		(list->use == RR) ? "Round-Robin" : (list->use == SJF) ? "Shortest Job First (Pre)" : "First Come First Served");
 	
 	if (list->use == RR) {
 		fprintf(output, "Quantum %d\n\n", list->quantum);
