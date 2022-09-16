@@ -11,7 +11,7 @@ void execute_process(instructions_* list) {
 	// do first basic lines of printing 
 	fprintf(output, "%d processes\n", list->processcount);
 	fprintf(output, "Using %s\n", 
-		(list->use == RR) ? "Round-Robin" : (list->use == SJF) ? "Shortest Job First (Pre)" : "First Come First Served");
+		(list->use == FCFS) ? "First Come First Served" : (list->use == RR) ? "Round-Robin" : "Shortest Job First (Pre)");
 	
 	if (list->use == RR) {
 		fprintf(output, "Quantum %d\n\n", list->quantum);
@@ -20,14 +20,28 @@ void execute_process(instructions_* list) {
 	}
 
 	if(list->use == RR) {
-		schedule_arrival(output, list, RR);
+		rr(output, list);
 	} else if(list->use == FCFS) {
-		schedule_arrival(output, list, FCFS);
+		fcfs(output, list);
 	} else if(list->use == SJF) {
 		sjf(output, list);
 	}
 
 	fclose(output);
+}
+
+void sjf(FILE* output, instructions_* list) {
+
+	// LOG; debug_print_list(list);
+}
+
+void rr(FILE* output, instructions_* list) {
+
+	schedule_arrival(output, list, RR);
+}
+
+void fcfs(FILE* output, instructions_* list) {
+	schedule_arrival(output, list, FCFS);
 }
 
 void schedule_arrival(FILE* output, instructions_* list, int type) {
@@ -131,11 +145,6 @@ void schedule_arrival(FILE* output, instructions_* list, int type) {
 
 	free(unused);
 	free(arrived);
-}
-
-void sjf(FILE* output, instructions_* list) {
-
-	// LOG; debug_print_list(list);
 }
 
 void burst(FILE* output, int time, node* active_node) {

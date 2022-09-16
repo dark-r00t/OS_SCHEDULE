@@ -34,6 +34,8 @@ typedef struct node {
 } node;
 
 void execute_process(instructions_* list);
+void fcfs(FILE* output, instructions_* list);
+void rr(FILE* output, instructions_* list);
 void sjf(FILE* output, instructions_* list);
 void schedule_arrival(FILE* output, instructions_* list, int type);
 void burst(FILE* output, int time, node* active_node);
