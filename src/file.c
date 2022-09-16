@@ -1,4 +1,5 @@
 #include "file.h"
+#include "defs.h"
 
 char* get_process() {
 
@@ -107,7 +108,7 @@ instructions_* parse_process(char* input) {
 					token = strtok(NULL, " ");
 					token = strtok(NULL, " ");
 					list->id[i]->burst = atoi(token);
-					list->id[i]->burst_r = list->id[i]->burst;
+					list->id[i]->burst_left = list->id[i]->burst;
 					token = strtok(NULL, " ");
 				}
 

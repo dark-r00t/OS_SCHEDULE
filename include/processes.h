@@ -4,16 +4,15 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <printf.h>
-#include "types.h"
 
 typedef struct instruction_ {
 
 	char* name;
 	int arrival;
 	int burst;
-	int burst_r;
+	int burst_left;
 	int wait;
-	int time_u;
+	int time_used;
 
 } instruction_;
 
