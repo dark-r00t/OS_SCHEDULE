@@ -15,5 +15,6 @@ queue* 	create_queue	();
 node* 	dequeue			(queue* q);
 void 	enqueue			(queue* q, node* n);
 void 	enqueue_arrival	(queue* q, node* n);
+void 	enqueue_burst	(queue* q, node* n);
 
 #endif

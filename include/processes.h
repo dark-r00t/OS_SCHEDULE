@@ -29,6 +29,7 @@ typedef struct instructions_ {
 typedef struct node {
 
 	struct node* head;		// way to traverse the list
+	struct node* tail;		// way to traverse the list
 	instruction_* process;	// copy of the original instruction_ data
 
 } node;
@@ -41,5 +42,6 @@ void sjf				(FILE* output, instructions_* list);
 
 void burst				(FILE* output, int time, instruction_* p);
 void schedule_arrival	(FILE* output, instructions_* list, int type);
+void schedule_burst(FILE* output, instructions_* list, int type);
 
 #endif

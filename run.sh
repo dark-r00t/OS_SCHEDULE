@@ -13,10 +13,10 @@ echo '' && echo '' && echo 'TEST TWO (2)'
 
 echo '' && echo '' && echo 'TEST THREE (3)'
 ./bin/run cases/set3_process.in && diff processes.out cases/set3_processes.out
-# bat processes.out
+bat processes.out
 # bat leak_info.txt
 
 echo '' && echo '' && echo 'TEST FOUR (4)'
 ./bin/run cases/set4_process.in && diff processes.out cases/set4_processes.out
-# bat processes.out
+bat processes.out
 # bat leak_info.txt
