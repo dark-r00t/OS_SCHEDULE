@@ -1,7 +1,8 @@
 #include "queue.h"
+#include <malloc.h>
 
 queue* create_queue() {
-
+	// creates a barebones queue; uninitialized
 	queue* q = malloc(sizeof(queue));
 
 	q->next = NULL;
@@ -11,7 +12,7 @@ queue* create_queue() {
 }
 	
 node* create_node(instruction_* process) {
-
+	// creates a barebones queue; initialized
 	node* n = malloc(sizeof(node));
 
 	n->head=NULL;
@@ -38,9 +39,9 @@ void enqueue(queue* q, node* n) {
 
 	if(!q || !n) return;
 
-	if(!q->next) {
+	if(!q->next) {// nothing in queue, add it and make a cycle
 		q->next = q->prev = n;
-	} else {
+	} else {// something in the queue, attach at the end
 		q->prev->head = n;
 		q->prev = n;
 	}
@@ -64,7 +65,7 @@ void enqueue_arrival(queue* q, node* n) {
 		return;
 	}
 
-	if (t == q->next)
+	if (t == q->next)// we never moved from the initial point...
        	q->next = n;
 	n->head = t;
 }

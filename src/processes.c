@@ -1,8 +1,9 @@
 #include "processes.h"
 #include "queue.h"
-#include "debug.h"
 #include "defs.h"
+
 #include <string.h>
+#include <malloc.h>
 
 void execute_process(instructions_* list) {
 
@@ -13,7 +14,7 @@ void execute_process(instructions_* list) {
 	fprintf(output, "Using %s\n", 
 		(list->use == FCFS) ? "First Come First Served" : (list->use == RR) ? "Round-Robin" : "Shortest Job First (Pre)");
 	
-	if (list->use == RR) {
+	if (list->use == RR) {// RR is the only case where time quantum is necessary
 		fprintf(output, "Quantum %d\n\n", list->quantum);
 	} else {
 		fprintf(output, "\n");
@@ -32,7 +33,7 @@ void execute_process(instructions_* list) {
 
 void sjf(FILE* output, instructions_* list) {
 
-	// LOG; debug_print_list(list);
+	// ! TODO
 }
 
 void rr(FILE* output, instructions_* list) {
@@ -41,14 +42,17 @@ void rr(FILE* output, instructions_* list) {
 }
 
 void fcfs(FILE* output, instructions_* list) {
+
 	schedule_arrival(output, list, FCFS);
 }
 
+void burst(FILE* output, int time, instruction_* p) {
+
+	p->wait += time - p->time_used;
+	fprintf(output, "Time %d: %s selected (burst %d)\n", time, p->name, p->burst_left);
+}
+
 void schedule_arrival(FILE* output, instructions_* list, int type) {
-
-	// LOG; debug_print_list(list);
-
-	if(type == SJF) return; // this should never happen...
 
 	queue* unused = create_queue();
 	queue* arrived = create_queue();
@@ -79,7 +83,7 @@ void schedule_arrival(FILE* output, instructions_* list, int type) {
 		if(!active_node && arrived->next) {
 			// no active node, but a node available
 			active_node = arrived->next;
-			burst(output, time, active_node);
+			burst(output, time, active_node->process);
 		}
 
 		if(active_node && !active_node->process->burst_left) {
@@ -87,11 +91,11 @@ void schedule_arrival(FILE* output, instructions_* list, int type) {
 			fprintf(output, "Time %d: %s finished\n", time, arrived->next->process->name);
 
 			free(dequeue(arrived));// detach active node (active_node == arrived->next), then free it
-			finished = 1;
+			finished = 1;// ONLY APPLICABLE FOR ROUND ROBIN
 
 			if(arrived->next) {// more processes to handle
 				active_node = arrived->next;
-				burst(output, time, active_node);
+				burst(output, time, active_node->process);
 			} else {// that's all she wrote
 				active_node = NULL;
 			}
@@ -108,7 +112,7 @@ void schedule_arrival(FILE* output, instructions_* list, int type) {
 
 				if(active_node) {
 					active_node = arrived->next;
-					burst(output, time, active_node);
+					burst(output, time, active_node->process);
 				}
 
 				time_quantum = 0;
@@ -136,21 +140,12 @@ void schedule_arrival(FILE* output, instructions_* list, int type) {
 	fprintf(output, "Finished at time %d\n\n", time);
 
 	for(int i = 0; i < list->processcount; i++) {
-		// ! TODO turnaround data sus, also only case of p->burst, maybe remove p->burst_left and just decrement og
+
 		instruction_* p = list->id[i]; 
 		fprintf(output, "%s wait %d turnaround %d\n", p->name, p->wait, (p->wait + p->burst));
+		// printf("%d: %d %d %d %d %d\n", i+1, list->runfor, p->time_used, p->arrival, p->wait, p->burst);
 	}
-
-	// LOG; debug_print_list(list);
 
 	free(unused);
 	free(arrived);
-}
-
-void burst(FILE* output, int time, node* active_node) {
-
-	instruction_* p = active_node->process;
-	p->wait += time - p->time_used;
-
-	fprintf(output, "Time %d: %s selected (burst %d)\n", time, p->name, p->burst_left);
 }

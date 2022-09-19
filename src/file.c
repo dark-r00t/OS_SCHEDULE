@@ -1,6 +1,9 @@
 #include "file.h"
 #include "defs.h"
 
+#include <stdlib.h>
+#include <string.h>
+
 char* get_process(char* optional_in) {
 
 	// For testing, more information in "driver.c"
@@ -25,15 +28,13 @@ char* get_process(char* optional_in) {
 
 		if(process_tmp[p] == ' ' && process_tmp[p+1] == ' ') {
 			// GET RID OF ALL EXTRA WHITE SPACE
-			while((c = process_tmp[p++]) == ' ');
-			p--;
+			while((c = process_tmp[1 + (p++)]) == ' ');
 		}
 
 		if(process_tmp[p] == '#'){
 			// GET RID OF COMMENTS
-			while ((c = process_tmp[p++]) != '\n');
+			while ((c = process_tmp[1 + (p++)]) != '\n');
 			process[loc++] = ' ';// seperator space, for later use with strtok()
-			p--;
 			continue; // continue because we dont know if the line is one entire comment
 		}
 
@@ -45,21 +46,28 @@ char* get_process(char* optional_in) {
 	return process;
 }
 
+int get_process_id(char* token) {
+
+	if(!strcmp(token, "processcount")) { return 1; } 
+	if(!strcmp(token, "runfor"))	   { return 2; } 
+	if(!strcmp(token, "use"))		   { return 3; } 
+	if(!strcmp(token, "process"))	   { return 4; } 
+										 return 0;
+} 
+
 instructions_* parse_process(char* input) {
 
 	// see 'processes.h' for more detail on 'instructions_'
 	instructions_* list = (instructions_*) malloc(sizeof(instructions_));
 
-	int tmp;
-
-	// tokenizing messes up the original string, we want to avoid that.
+	// tokenizing "chunks" up the original string, we want to avoid that in our function
 	char* process = (char*) malloc(sizeof(char) * strlen(input) + 1);
 	strcpy(process, input);
 
 	char* token = strtok(process, " ");// tokenize by white space
 	while(token) {
 
-		tmp = get_process_id(token);
+		int tmp = get_process_id(token);
 		token = strtok(NULL, " ");// step ahead one token
 
 		switch(tmp) {
@@ -67,11 +75,13 @@ instructions_* parse_process(char* input) {
 			case 1:{// processcount
 				list->processcount = atoi(token);
 
-				list->id = (instruction_**) malloc(sizeof(instruction_*) * list->processcount);// malloc space for each instruction
+				// malloc space for each instruction
+				list->id = (instruction_**) malloc(sizeof(instruction_*) * list->processcount);
 				
-				for(int i = 0; i < list->processcount; i++) {// for each instruction create space and add the name
+				for(int i = 0; i < list->processcount; i++) {
+					// for each instruction create space for struct and the name
 					list->id[i] = (instruction_*) malloc(sizeof(instruction_));
-					list->id[i]->name = malloc(sizeof(char) * 3);
+					list->id[i]->name = (char*) malloc(sizeof(char) * 3);
 				}
 
 				break;
@@ -84,11 +94,10 @@ instructions_* parse_process(char* input) {
 
 			case 3:{// use
 				if (strcmp(token, "rr") == 0)  {
+					strtok(NULL, " ");	
+					token = strtok(NULL, " ");
+
 					list->use = RR;
-
-					token = strtok(NULL, " ");
-					token = strtok(NULL, " ");
-
 					list->quantum = atoi(token);
 
 				} else if (strcmp(token, "fcfs") == 0) {
@@ -104,18 +113,19 @@ instructions_* parse_process(char* input) {
 
 			case 4:{// name/arrival/burst are always paired
 
+				token = strtok(NULL, " "); 
 				for(int i = 0; i < list->processcount; i++) {
-					token = strtok(NULL, " "); 
+					
 					strcpy(list->id[i]->name, token);
+					strtok(NULL, " ");	
+					token = strtok(NULL, " ");
 
-					token = strtok(NULL, " ");
-					token = strtok(NULL, " ");
 					list->id[i]->arrival = atoi(token);
+					strtok(NULL, " ");	
+					token = strtok(NULL, " ");
 
-					token = strtok(NULL, " ");
-					token = strtok(NULL, " ");
-					list->id[i]->burst = atoi(token);
-					list->id[i]->burst_left = list->id[i]->burst;
+					list->id[i]->burst = list->id[i]->burst_left = atoi(token);
+					strtok(NULL, " ");	
 					token = strtok(NULL, " ");
 				}
 
@@ -125,22 +135,9 @@ instructions_* parse_process(char* input) {
 			default: break;
 		}
 
-		token = strtok(NULL, " ");
+		token = strtok(NULL, " ");// move to next token, while loop then validates it
 	}
 
 	free(process);
 	return list;
 }
-
-int get_process_id(char* token) {
-
-	if(!strcmp(token, "processcount")) {
-		return 1;
-	} else if(!strcmp(token, "runfor")) {
-		return 2;
-	} else if(!strcmp(token, "use")) {
-		return 3;
-	} else if(!strcmp(token, "process")) {// process name
-		return 4;
-	} return 0;
-} 

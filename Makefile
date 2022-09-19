@@ -26,7 +26,7 @@ $(BIN_DIR) $(OBJ_DIR):
 	mkdir $@
 
 clean:
-	@$(RM) -rv $(BIN_DIR) $(OBJ_DIR) null.d
+	@$(RM) -rv $(BIN_DIR) $(OBJ_DIR) null.d processes.out
 	
 rebuild: clean all
 
