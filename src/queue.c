@@ -57,6 +57,7 @@ void enqueue_arrival(queue* q, node* n) {
 	while(t) {// stop on new lowest arrival
 		if(n->process->arrival < t->process->arrival) break;
 		if (t->head) if(n->process->arrival < t->head->process->arrival) {
+			//sanity check
 			n->head = t->head;
 			t->head = n;
 			return;
@@ -83,6 +84,7 @@ void enqueue_burst(queue* q, node* n) {// ! TODO
 	while(t) {// stop on new lowest arrival
 		if(n->process->burst_left < t->process->burst_left) break;
 		if (t->head) if(n->process->burst_left < t->head->process->burst_left) {
+			//sanity check
 			n->head = t->head;
 			t->head = n;
 			return;

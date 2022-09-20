@@ -80,18 +80,17 @@ void schedule_arrival(FILE* output, instructions_* list, int type) {
 			fprintf(output, "Time %d: %s arrived\n", time, p->process->name);
 		}
 
-		if(!active_node) if(arrived->next) {
+		if(!active_node && arrived->next) {
 			// no active node, but a node available
 			active_node = arrived->next;
 			burst(output, time, active_node->process);
 		}
 
-		if(active_node) if(!active_node->process->burst_left) {
+		if(active_node && !active_node->process->burst_left) {
 			// no burst left on active node
 			fprintf(output, "Time %d: %s finished\n", time, arrived->next->process->name);
 
-			free(dequeue(arrived));// detach active node (active_node == arrived->next), then free it
-			finished = 1;// ONLY APPLICABLE FOR ROUND ROBIN
+			free(dequeue(arrived)); // detach active node (active_node == arrived->next), then free it
 
 			if(arrived->next) {// more processes to handle
 				active_node = arrived->next;
@@ -101,6 +100,7 @@ void schedule_arrival(FILE* output, instructions_* list, int type) {
 			}
 
 			if (type == RR) time_quantum = 0;
+			if (type == RR) finished = 1;
 		}
 
 		if (type == RR) {
@@ -125,7 +125,7 @@ void schedule_arrival(FILE* output, instructions_* list, int type) {
 		if (type == RR) time_quantum++;
 	}
 
-	if(active_node) if(!active_node->process->burst_left) {
+	if(active_node && !active_node->process->burst_left) {
 		// the last active node finished successfully
 		instruction_* p = active_node->process;
 		fprintf(output, "Time %d: %s finished\n", time, p->name);
@@ -164,16 +164,6 @@ void schedule_burst(FILE* output, instructions_* list, int type) {
 		enqueue_arrival(unused, create_node(list->id[i]));
 	}
 
-	/* for(int i = 0; i < list->processcount; i++) {
-		enqueue_burst(arrived, create_node(list->id[i]));
-	} printf("\n"); 
-
-	active_node = arrived->next;
-	while(active_node) {
-		printf("%d ", active_node->process->burst_left);
-		active_node = active_node->head;
-	} */
-
 	while(++time != list->runfor) {// we will never run past the alloted time
 
 		while(unused->next && unused->next->process->arrival == time) {
@@ -185,25 +175,26 @@ void schedule_burst(FILE* output, instructions_* list, int type) {
 			fprintf(output, "Time %d: %s arrived\n", time, p->process->name);
 		}
 
-		if(!active_node && arrived->next) {
-			// no active node, but a node available
-			active_node = arrived->next;
-			burst(output, time, active_node->process);
-		}
-
 		if(active_node && !active_node->process->burst_left) {
 			// no burst left on active node
 			fprintf(output, "Time %d: %s finished\n", time, active_node->process->name);
 
-			dequeue(arrived);
+			free(active_node);// active node is not in queue, so we can just free
+			active_node = NULL;
+		} 
 
-		} else if (arrived->next && active_node->process->burst_left > arrived->next->process->burst_left) {// ! TODO
-			active_node->process->time_used = time;
-			node* p = active_node;
+		if(!active_node && arrived->next) {
+			// no active node, but a node available
 			active_node = dequeue(arrived);
-			active_node->process->wait += time - active_node->process->time_used;
-			enqueue_burst(arrived, p);
-			fprintf(output, "Time %d: %s selected (burst %d)\n", time, active_node->process->name, active_node->process->burst_left);
+			burst(output, time, active_node->process);
+			
+		} else if (active_node && arrived->next) {
+			if (active_node->process->burst_left > arrived->next->process->burst_left) {
+				active_node->process->time_used = time;
+				enqueue_burst(arrived, active_node);// re-add this node to the queue (based on burst length of course)
+				active_node = dequeue(arrived);//      update our new active_node with the one w/ shorter burst time
+				burst(output, time, active_node->process);
+			}
 		}
 
 		if(active_node) active_node->process->burst_left--;
