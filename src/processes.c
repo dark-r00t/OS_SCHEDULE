@@ -150,6 +150,8 @@ void schedule_arrival(FILE* output, instructions_* list, int type) {
 	free(arrived);
 }
 
+// TODO
+// ! active_node = dequeue(...) instead of just ...->next
 void schedule_burst(FILE* output, instructions_* list, int type) {
 
 	queue* unused = create_queue();
