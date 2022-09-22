@@ -107,10 +107,10 @@ void schedule_arrival(FILE* output, instructions_* list, int type) {
 
 			if(!finished && time_quantum == list->quantum) {
 
-				if(active_node) active_node->process->time_used = time;
 				if(arrived->next) enqueue(arrived, dequeue(arrived)); // shove the active_node to the back
 
 				if(active_node) {
+					active_node->process->time_used = time;
 					active_node = arrived->next;
 					burst(output, time, active_node->process);
 				}
