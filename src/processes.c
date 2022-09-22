@@ -105,10 +105,10 @@ void schedule_arrival(FILE* output, instructions_* list, int type) {
 
 		if (type == RR) {
 
-			if(!finished) if(time_quantum == list->quantum) {
+			if(!finished && time_quantum == list->quantum) {
 
-				active_node->process->time_used = time;
-				enqueue(arrived, dequeue(arrived)); // shove the active_node to the back
+				if(active_node) active_node->process->time_used = time;
+				if(arrived->next) enqueue(arrived, dequeue(arrived)); // shove the active_node to the back
 
 				if(active_node) {
 					active_node = arrived->next;
@@ -129,7 +129,7 @@ void schedule_arrival(FILE* output, instructions_* list, int type) {
 		// the last active node finished successfully
 		instruction_* p = active_node->process;
 		fprintf(output, "Time %d: %s finished\n", time, p->name);
-	} else if (active_node) if(active_node->process->burst_left) {
+	} else if (active_node && active_node->process->burst_left) {
 		// the last active node ran out of time
 		instruction_* p = active_node->process;
 		fprintf(output, "%s wait %d did not complete\n", p->name, p->wait);
@@ -153,6 +153,8 @@ void schedule_arrival(FILE* output, instructions_* list, int type) {
 // TODO
 // ! active_node = dequeue(...) instead of just ...->next
 void schedule_burst(FILE* output, instructions_* list, int type) {
+
+	if(type != SJF) return;
 
 	queue* unused = create_queue();
 	queue* arrived = create_queue();

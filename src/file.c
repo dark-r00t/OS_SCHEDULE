@@ -10,6 +10,14 @@ char* get_process(char* optional_in) {
 	FILE* fp;
 	if(!optional_in) fp = fopen("processes.in", "r");
 	else 			 fp = fopen(optional_in, "r");
+
+	if(!fp) {
+		printf("ERROR READING FILE!\n");
+		if (optional_in) printf("%s%s%s caused an error. Maybe, try retyping and varifying your input file name and path.\n", 
+						 	RED, optional_in, CLEAR);
+		else 			 printf("Ensure %sprocesses.in%s is in the root directory and try again.\n", 
+							RED, CLEAR);
+	}
 	
 	// GET FILE AND FILE LENGTH
 	fseek(fp, 0, SEEK_END);

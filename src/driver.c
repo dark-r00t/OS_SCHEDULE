@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
 		printf("\nNOTE: Running file %s\"%s\"%s\n", 
 			GREEN, optional_in, CLEAR
 		);
-	}
+	} else if (argc > 2) return 1;
 	
 	char* process = get_process(optional_in);
 	instructions_* list = parse_process(process);
