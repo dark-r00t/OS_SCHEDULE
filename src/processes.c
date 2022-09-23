@@ -120,7 +120,7 @@ void schedule_arrival(FILE* output, instructions_* list, int type) {
 		}
 
 		if(active_node) active_node->process->burst_left--;
-		else fprintf(output, "Time %d: IDLE\n", time);// idle until time runfor time has been reached
+		else fprintf(output, "Time %d: IDLE\n", time);// idle until runfor time has been reached
 
 		if (type == RR) time_quantum++;
 	}
@@ -146,12 +146,10 @@ void schedule_arrival(FILE* output, instructions_* list, int type) {
 		// printf("%d: %d %d %d %d %d\n", i+1, list->runfor, p->time_used, p->arrival, p->wait, p->burst);
 	}
 
-	free(unused);
-	free(arrived);
+	if (unused)  free(unused);
+	if (arrived) free(arrived);
 }
 
-// TODO
-// ! active_node = dequeue(...) instead of just ...->next
 void schedule_burst(FILE* output, instructions_* list, int type) {
 
 	if(type != SJF) return;
@@ -202,7 +200,7 @@ void schedule_burst(FILE* output, instructions_* list, int type) {
 		}
 
 		if(active_node) active_node->process->burst_left--;
-		else fprintf(output, "Time %d: IDLE\n", time);// idle until time runfor time has been reached
+		else fprintf(output, "Time %d: IDLE\n", time);// idle until runfor time has been reached
 	}
 
 	if(active_node && !active_node->process->burst_left) {
@@ -226,6 +224,6 @@ void schedule_burst(FILE* output, instructions_* list, int type) {
 		// printf("%d: %d %d %d %d %d\n", i+1, list->runfor, p->time_used, p->arrival, p->wait, p->burst);
 	}
 
-	free(unused);
-	free(arrived);
+	if (unused)  free(unused);
+	if (arrived) free(arrived);
 }
