@@ -76,7 +76,7 @@ void enqueue_arrival(queue* q, node* n) {
 	n->head = t;
 }
 
-void enqueue_burst(queue* q, node* n) {// ! TODO
+void enqueue_burst(queue* q, node* n) {
 
 	if(!q || !n) return;
 
@@ -99,6 +99,6 @@ void enqueue_burst(queue* q, node* n) {// ! TODO
 	}
 
 	if (t == q->next)// we never moved from the initial point...
-       	q->next = n;
+       	q->next = n;// plop the node in as the first link
 	n->head = t;
 }

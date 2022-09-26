@@ -16,7 +16,11 @@ int main(int argc, char** argv) {
 	} else if (argc > 2) return 1;
 	
 	char* process = get_process(optional_in);
+	if(!process) return 1;
+
 	instructions_* list = parse_process(process);
+	if(!list) return 1;
+
 	execute_process(list);
 	
 	free(process);

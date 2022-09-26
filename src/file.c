@@ -13,10 +13,11 @@ char* get_process(char* optional_in) {
 
 	if(!fp) {
 		printf("ERROR READING FILE!\n");
-		if (optional_in) printf("%s%s%s caused an error. Maybe, try retyping and varifying your input file name and path.\n", 
+		if (optional_in) printf("%s%s%s caused an error.\nPerhaps, try retyping and varifying your input file name and path.\n", 
 						 	RED, optional_in, CLEAR);
 		else 			 printf("Ensure %sprocesses.in%s is in the root directory and try again.\n", 
 							RED, CLEAR);
+		return NULL;
 	}
 	
 	// GET FILE AND FILE LENGTH
@@ -75,7 +76,7 @@ instructions_* parse_process(char* input) {
 	char* token = strtok(process, " ");// tokenize by white space
 	while(token) {
 
-		int tmp = get_process_id(token);
+		int tmp = get_process_id(token);// notice the usse of this in the switch case
 		token = strtok(NULL, " ");// step ahead one token
 
 		switch(tmp) {

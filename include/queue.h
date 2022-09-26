@@ -6,7 +6,8 @@
 typedef struct queue {
 
 	node* next;
-	node* prev;
+	node* prev;// queues are weird, we never use this in processes.c 
+			   // however, it simplifies queue.c
 
 } queue;
 

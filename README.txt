@@ -12,11 +12,18 @@ A FILE IN THE ROOT DIRECTORY WILL BE CREATED AS "processes.out"
 > cat processes.out
 ```
 
-OPTIONAL
+OPTIONAL #1
 YOU MAY SPECIFY A FILE IN ANY DIRECTORY TO RUN BY ADDING AN ARGUMENT
 PLEASE NOTE, IF IT DOES NOT WORK YOU MAY HAVE SPELT THE FILE WRONG
 ```
 > make
 > ./bin/run cases/some_test_case.in
 > cat processes.out
+```
+
+OPTIONAL #2
+Building off of OPTIONAL #1, you may use the provided shell script: "run.sh"
+```
+> chmod +x run.sh
+> ./run.sh
 ```
