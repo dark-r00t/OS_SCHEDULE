@@ -1,0 +1,520 @@
+removed 'bin/run'
+removed directory 'bin'
+removed 'obj/driver.d'
+removed 'obj/driver.o'
+removed 'obj/file.d'
+removed 'obj/file.o'
+removed 'obj/processes.d'
+removed 'obj/processes.o'
+removed 'obj/queue.d'
+removed 'obj/queue.o'
+removed directory 'obj'
+removed 'processes.out'
+mkdir obj
+cc -Wall -Wextra -std=c11 -pedantic  -Iinclude -MMD -MP -c src/driver.c -o obj/driver.o
+cc -Wall -Wextra -std=c11 -pedantic  -Iinclude -MMD -MP -c src/file.c -o obj/file.o
+cc -Wall -Wextra -std=c11 -pedantic  -Iinclude -MMD -MP -c src/processes.c -o obj/processes.o
+cc -Wall -Wextra -std=c11 -pedantic  -Iinclude -MMD -MP -c src/queue.c -o obj/queue.o
+mkdir bin
+cc -Llib  obj/driver.o obj/file.o obj/processes.o obj/queue.o -lm -o bin/run
+
+
+TEST ONE (5)
+
+NOTE: Running file [1m[32m"additional/set5_process.in"[0m
+3 processes
+Using First Come First Served
+
+Time 0: P1 arrived
+Time 0: P1 selected (burst 29)
+Time 3: P2 arrived
+Time 4: P3 arrived
+Time 29: P1 finished
+Time 29: P2 selected (burst 3)
+P3 wait 0 did not complete
+Finished at time 30
+
+P1 wait 0 turnaround 29
+P2 wait 26 turnaround 29
+P3 wait 0 turnaround 3
+
+
+TEST ONE (6)
+
+NOTE: Running file [1m[32m"additional/set6_process.in"[0m
+2 processes
+Using Round-Robin
+Quantum 5
+
+Time 0: P2 arrived
+Time 0: P2 selected (burst 9)
+Time 3: P1 arrived
+Time 5: P1 selected (burst 5)
+Time 10: P1 finished
+P2 wait 0 did not complete
+Finished at time 10
+
+P1 wait 2 turnaround 7
+P2 wait 0 turnaround 9
+
+
+TEST ONE (7)
+
+NOTE: Running file [1m[32m"additional/set7_process.in"[0m
+2 processes
+Using Shortest Job First (Pre)
+
+Time 0: P2 arrived
+Time 0: P2 selected (burst 9)
+Time 3: P1 arrived
+Time 3: P1 selected (burst 5)
+Time 8: P1 finished
+Time 8: P2 selected (burst 6)
+Finished at time 10
+
+P1 wait 0 turnaround 5
+P2 wait 5 turnaround 14
+
+
+TEST ONE (8)
+
+NOTE: Running file [1m[32m"additional/set8_process.in"[0m
+2 processes
+Using First Come First Served
+
+Time 0: P1 arrived
+Time 0: P1 selected (burst 10)
+Time 10: P1 finished
+Time 10: IDLE
+Time 11: IDLE
+Time 12: IDLE
+Time 13: IDLE
+Time 14: IDLE
+Time 15: IDLE
+Time 16: IDLE
+Time 17: IDLE
+Time 18: IDLE
+Time 19: IDLE
+Time 20: IDLE
+Time 21: IDLE
+Time 22: IDLE
+Time 23: IDLE
+Time 24: IDLE
+Time 25: IDLE
+Time 26: IDLE
+Time 27: IDLE
+Time 28: IDLE
+Time 29: P2 arrived
+Time 29: P2 selected (burst 2)
+Finished at time 30
+
+P1 wait 0 turnaround 10
+P2 wait 0 turnaround 2
+
+
+TEST ONE (9)
+
+NOTE: Running file [1m[32m"additional/set9_process.in"[0m
+10 processes
+Using First Come First Served
+
+Time 0: P1 arrived
+Time 0: P1 selected (burst 1)
+Time 1: P2 arrived
+Time 1: P1 finished
+Time 1: P2 selected (burst 1)
+Time 2: P3 arrived
+Time 2: P2 finished
+Time 2: P3 selected (burst 1)
+Time 3: P4 arrived
+Time 3: P3 finished
+Time 3: P4 selected (burst 1)
+Time 4: P5 arrived
+Time 4: P4 finished
+Time 4: P5 selected (burst 1)
+Time 5: P6 arrived
+Time 5: P5 finished
+Time 5: P6 selected (burst 1)
+Time 6: P7 arrived
+Time 6: P6 finished
+Time 6: P7 selected (burst 1)
+Time 7: P8 arrived
+Time 7: P7 finished
+Time 7: P8 selected (burst 1)
+Time 8: P9 arrived
+Time 8: P8 finished
+Time 8: P9 selected (burst 1)
+Time 9: P10 arrived
+Time 9: P9 finished
+Time 9: P10 selected (burst 1)
+Time 10: P10 finished
+Time 10: IDLE
+Time 11: IDLE
+Time 12: IDLE
+Time 13: IDLE
+Time 14: IDLE
+Time 15: IDLE
+Time 16: IDLE
+Time 17: IDLE
+Time 18: IDLE
+Time 19: IDLE
+Time 20: IDLE
+Time 21: IDLE
+Time 22: IDLE
+Time 23: IDLE
+Time 24: IDLE
+Time 25: IDLE
+Time 26: IDLE
+Time 27: IDLE
+Time 28: IDLE
+Time 29: IDLE
+Finished at time 30
+
+P1 wait 0 turnaround 1
+P2 wait 0 turnaround 1
+P3 wait 0 turnaround 1
+P4 wait 0 turnaround 1
+P5 wait 0 turnaround 1
+P6 wait 0 turnaround 1
+P7 wait 0 turnaround 1
+P8 wait 0 turnaround 1
+P9 wait 0 turnaround 1
+P10 wait 0 turnaround 1
+
+
+TEST ONE (10)
+
+NOTE: Running file [1m[32m"additional/set10_process.in"[0m
+10 processes
+Using Round-Robin
+Quantum 1
+
+Time 0: P1 arrived
+Time 0: P1 selected (burst 1)
+Time 1: P2 arrived
+Time 1: P1 finished
+Time 1: P2 selected (burst 1)
+Time 2: P3 arrived
+Time 2: P2 finished
+Time 2: P3 selected (burst 1)
+Time 3: P4 arrived
+Time 3: P3 finished
+Time 3: P4 selected (burst 1)
+Time 4: P5 arrived
+Time 4: P4 finished
+Time 4: P5 selected (burst 1)
+Time 5: P6 arrived
+Time 5: P5 finished
+Time 5: P6 selected (burst 1)
+Time 6: P7 arrived
+Time 6: P6 finished
+Time 6: P7 selected (burst 1)
+Time 7: P8 arrived
+Time 7: P7 finished
+Time 7: P8 selected (burst 1)
+Time 8: P9 arrived
+Time 8: P8 finished
+Time 8: P9 selected (burst 1)
+Time 9: P10 arrived
+Time 9: P9 finished
+Time 9: P10 selected (burst 1)
+Time 10: P10 finished
+Time 10: IDLE
+Time 11: IDLE
+Time 12: IDLE
+Time 13: IDLE
+Time 14: IDLE
+Time 15: IDLE
+Time 16: IDLE
+Time 17: IDLE
+Time 18: IDLE
+Time 19: IDLE
+Time 20: IDLE
+Time 21: IDLE
+Time 22: IDLE
+Time 23: IDLE
+Time 24: IDLE
+Time 25: IDLE
+Time 26: IDLE
+Time 27: IDLE
+Time 28: IDLE
+Time 29: IDLE
+Finished at time 30
+
+P1 wait 0 turnaround 1
+P2 wait 0 turnaround 1
+P3 wait 0 turnaround 1
+P4 wait 0 turnaround 1
+P5 wait 0 turnaround 1
+P6 wait 0 turnaround 1
+P7 wait 0 turnaround 1
+P8 wait 0 turnaround 1
+P9 wait 0 turnaround 1
+P10 wait 0 turnaround 1
+
+
+TEST ONE (11)
+
+NOTE: Running file [1m[32m"additional/set11_process.in"[0m
+2 processes
+Using Round-Robin
+Quantum 2
+
+Time 0: P1 arrived
+Time 0: P1 selected (burst 10)
+Time 2: P1 selected (burst 8)
+Time 4: P1 selected (burst 6)
+Time 6: P1 selected (burst 4)
+Time 8: P1 selected (burst 2)
+Time 10: P1 finished
+Time 10: IDLE
+Time 11: IDLE
+Time 12: IDLE
+Time 13: IDLE
+Time 14: IDLE
+Time 15: IDLE
+Time 16: IDLE
+Time 17: IDLE
+Time 18: IDLE
+Time 19: IDLE
+Time 20: IDLE
+Time 21: IDLE
+Time 22: IDLE
+Time 23: IDLE
+Time 24: IDLE
+Time 25: IDLE
+Time 26: IDLE
+Time 27: IDLE
+Time 28: IDLE
+Time 29: P2 arrived
+Time 29: P2 selected (burst 2)
+Finished at time 30
+
+P1 wait 0 turnaround 10
+P2 wait 0 turnaround 2
+
+
+TEST ONE (12)
+
+NOTE: Running file [1m[32m"additional/set12_process.in"[0m
+2 processes
+Using Shortest Job First (Pre)
+
+Time 0: P1 arrived
+Time 0: P1 selected (burst 10)
+Time 10: P1 finished
+Time 10: IDLE
+Time 11: IDLE
+Time 12: IDLE
+Time 13: IDLE
+Time 14: IDLE
+Time 15: IDLE
+Time 16: IDLE
+Time 17: IDLE
+Time 18: IDLE
+Time 19: IDLE
+Time 20: IDLE
+Time 21: IDLE
+Time 22: IDLE
+Time 23: IDLE
+Time 24: IDLE
+Time 25: IDLE
+Time 26: IDLE
+Time 27: IDLE
+Time 28: IDLE
+Time 29: P2 arrived
+Time 29: P2 selected (burst 2)
+Finished at time 30
+
+P1 wait 0 turnaround 10
+P2 wait 0 turnaround 2
+
+
+TEST ONE (13)
+
+NOTE: Running file [1m[32m"additional/set13_process.in"[0m
+10 processes
+Using First Come First Served
+
+Time 0: P1 arrived
+Time 0: P1 selected (burst 1)
+Time 1: P2 arrived
+Time 1: P1 finished
+Time 1: P2 selected (burst 1)
+Time 2: P3 arrived
+Time 2: P2 finished
+Time 2: P3 selected (burst 1)
+Time 3: P4 arrived
+Time 3: P3 finished
+Time 3: P4 selected (burst 1)
+Time 4: P5 arrived
+Time 4: P4 finished
+Time 4: P5 selected (burst 1)
+Time 5: P6 arrived
+Time 5: P5 finished
+Time 5: P6 selected (burst 1)
+Time 6: P7 arrived
+Time 6: P6 finished
+Time 6: P7 selected (burst 1)
+Time 7: P8 arrived
+Time 7: P7 finished
+Time 7: P8 selected (burst 1)
+Time 8: P9 arrived
+Time 8: P8 finished
+Time 8: P9 selected (burst 1)
+Time 9: P10 arrived
+Time 9: P9 finished
+Time 9: P10 selected (burst 1)
+Time 10: P10 finished
+Time 10: IDLE
+Time 11: IDLE
+Time 12: IDLE
+Time 13: IDLE
+Time 14: IDLE
+Time 15: IDLE
+Time 16: IDLE
+Time 17: IDLE
+Time 18: IDLE
+Time 19: IDLE
+Time 20: IDLE
+Time 21: IDLE
+Time 22: IDLE
+Time 23: IDLE
+Time 24: IDLE
+Time 25: IDLE
+Time 26: IDLE
+Time 27: IDLE
+Time 28: IDLE
+Time 29: IDLE
+Finished at time 30
+
+P1 wait 0 turnaround 1
+P2 wait 0 turnaround 1
+P3 wait 0 turnaround 1
+P4 wait 0 turnaround 1
+P5 wait 0 turnaround 1
+P6 wait 0 turnaround 1
+P7 wait 0 turnaround 1
+P8 wait 0 turnaround 1
+P9 wait 0 turnaround 1
+P10 wait 0 turnaround 1
+
+
+TEST ONE (14)
+
+NOTE: Running file [1m[32m"additional/set14_process.in"[0m
+3 processes
+Using First Come First Served
+
+Time 0: IDLE
+Time 1: IDLE
+Time 2: IDLE
+Time 3: IDLE
+Time 4: IDLE
+Time 5: P1 arrived
+Time 5: P1 selected (burst 24)
+Time 8: P2 arrived
+Time 9: P3 arrived
+Time 29: P1 finished
+Time 29: P2 selected (burst 3)
+Time 32: P2 finished
+Time 32: P3 selected (burst 3)
+Time 35: P3 finished
+Time 35: IDLE
+Time 36: IDLE
+Time 37: IDLE
+Time 38: IDLE
+Time 39: IDLE
+Finished at time 40
+
+P1 wait 0 turnaround 24
+P2 wait 21 turnaround 24
+P3 wait 23 turnaround 26
+
+
+TEST ONE (15)
+
+NOTE: Running file [1m[32m"additional/set15_process.in"[0m
+3 processes
+Using Round-Robin
+Quantum 2
+
+Time 0: IDLE
+Time 1: IDLE
+Time 2: IDLE
+Time 3: IDLE
+Time 4: IDLE
+Time 5: P1 arrived
+Time 5: P1 selected (burst 24)
+Time 6: P1 selected (burst 23)
+Time 8: P2 arrived
+Time 8: P2 selected (burst 3)
+Time 9: P3 arrived
+Time 10: P1 selected (burst 21)
+Time 12: P3 selected (burst 3)
+Time 14: P2 selected (burst 1)
+Time 15: P2 finished
+Time 15: P1 selected (burst 19)
+Time 17: P3 selected (burst 1)
+Time 18: P3 finished
+Time 18: P1 selected (burst 17)
+Time 20: P1 selected (burst 15)
+Time 22: P1 selected (burst 13)
+Time 24: P1 selected (burst 11)
+Time 26: P1 selected (burst 9)
+Time 28: P1 selected (burst 7)
+Time 30: P1 selected (burst 5)
+Time 32: P1 selected (burst 3)
+Time 34: P1 selected (burst 1)
+Time 35: P1 finished
+Time 35: IDLE
+Time 36: IDLE
+Time 37: IDLE
+Time 38: IDLE
+Time 39: IDLE
+Finished at time 40
+
+P1 wait 6 turnaround 30
+P2 wait 4 turnaround 7
+P3 wait 6 turnaround 9
+
+
+TEST ONE (16)
+
+NOTE: Running file [1m[32m"additional/set16_process.in"[0m
+3 processes
+Using Shortest Job First (Pre)
+
+Time 0: IDLE
+Time 1: IDLE
+Time 2: IDLE
+Time 3: IDLE
+Time 4: IDLE
+Time 5: P1 arrived
+Time 5: P1 selected (burst 24)
+Time 8: P2 arrived
+Time 8: P2 selected (burst 3)
+Time 9: P3 arrived
+Time 11: P2 finished
+Time 11: P3 selected (burst 3)
+Time 14: P3 finished
+Time 14: P1 selected (burst 21)
+Time 35: P1 finished
+Time 35: IDLE
+Time 36: IDLE
+Time 37: IDLE
+Time 38: IDLE
+Time 39: IDLE
+Finished at time 40
+
+P1 wait 6 turnaround 30
+P2 wait 0 turnaround 3
+P3 wait 2 turnaround 5
+
+
+TEST ONE (17)
+
+NOTE: Running file [1m[32m"additional/set17_process.in"[0m
+5 processes
+Using Shortest Job First (Pre)
+

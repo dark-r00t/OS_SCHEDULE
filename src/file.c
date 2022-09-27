@@ -48,7 +48,11 @@ char* get_process(char* optional_in) {
 		}
 
 		//STORE VALUE (guranteed to be useful)
-		process[loc++] = process_tmp[p];
+		if(process_tmp[p] == '\n' || process_tmp[p] == ' ') {
+			if(process[loc - 1] == ' ') printf("!");
+			else process[loc] = ' ';
+			loc++;
+		} else process[loc++] = process_tmp[p];
 	}
 
 	free(process_tmp);
@@ -122,11 +126,10 @@ instructions_* parse_process(char* input) {
 
 			case 4:{// name/arrival/burst are always paired
 
-				token = strtok(NULL, " "); 
+				token = strtok(NULL, " ");
 				for(int i = 0; i < list->processcount; i++) {
-					
 					strcpy(list->id[i]->name, token);
-					strtok(NULL, " ");	
+					strtok(NULL, " ");
 					token = strtok(NULL, " ");
 
 					list->id[i]->arrival = atoi(token);
@@ -135,6 +138,7 @@ instructions_* parse_process(char* input) {
 
 					list->id[i]->burst = list->id[i]->burst_left = atoi(token);
 					strtok(NULL, " ");	
+					token = strtok(NULL, " ");
 					token = strtok(NULL, " ");
 				}
 
