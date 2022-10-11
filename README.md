@@ -1,10 +1,12 @@
-PLACE "processes.in" INTO THE ROOT DIRECTORY
+# Programming Assignment #1 - Schedulers 
 
-RUN MAKE ($ make) or ($ make rebuild)
+### PLACE "processes.in" INTO THE ROOT DIRECTORY
 
-TYPE: ($ ./bin/run) TO EXECUTE THE NOW COMPILED SOURCE CODE
+### RUN MAKE ($ make) or ($ make rebuild)
 
-A FILE IN THE ROOT DIRECTORY WILL BE CREATED AS "processes.out"
+### TYPE: ($ ./bin/run) TO EXECUTE THE NOW COMPILED SOURCE CODE
+
+### A FILE IN THE ROOT DIRECTORY WILL BE CREATED AS "processes.out"
 
 ```
 > make
@@ -27,3 +29,6 @@ Building off of OPTIONAL #1, you may use the provided shell script: "run.sh"
 > chmod +x run.sh
 > ./run.sh
 ```
+
+## Instructions
+
