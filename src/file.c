@@ -37,22 +37,23 @@ char* get_process(char* optional_in) {
 
 		if(process_tmp[p] == ' ' && process_tmp[p+1] == ' ') {
 			// GET RID OF ALL EXTRA WHITE SPACE
-			while((c = process_tmp[1 + (p++)]) == ' ');
+			while((c = process_tmp[++p]) == ' ');
 		}
 
 		if(process_tmp[p] == '#'){
 			// GET RID OF COMMENTS
-			while ((c = process_tmp[1 + (p++)]) != '\n');
+			while ((c = process_tmp[++p]) != '\n');
 			process[loc++] = ' ';// seperator space, for later use with strtok()
 			continue; // continue because we dont know if the line is one entire comment
 		}
 
 		//STORE VALUE (guranteed to be useful)
 		if(process_tmp[p] == '\n' || process_tmp[p] == ' ') {
-			if(process[loc - 1] == ' ') printf("!");
-			else process[loc] = ' ';
+			process[loc] = ' ';
 			loc++;
-		} else process[loc++] = process_tmp[p];
+		} else {
+			process[loc++] = process_tmp[p];
+		}
 	}
 
 	free(process_tmp);
